@@ -1,0 +1,77 @@
+{% set SinglePost = SinglePost ?? false %}
+<div class="border border-white bg-white  mt-2 relative" style="z-index: 99;">
+    <div class= " mb-3 ">
+        <div class="flex items-center" id="flex">
+            <div class="ml-2 pt-2">
+                {{ include('shared/_avatar.html.twig', { profile: post.author.userProfile, size: 12}) }}
+            </div>
+            <div>
+                <div>
+                    <a href="{{ path('app_profile', { id: post.author.id }) }}"
+                    class="font-semibold ml-2 ">
+                        {{post.author.userProfile.name}}
+                    </a> 
+                </div>
+                   
+            </div>       
+            <div class="ml-8">
+                {{include('follower/_follow_button.html.twig',{userToFollow:post.author})}}
+            </div>    
+            {% if SinglePost and post.author == app.user %}
+                <div class=" absolute top-0 right-0 mt-2 mr-2" id="dropdown">
+                    <button onclick="toggleDropdown()" class="text-gray-500 hover:text-gray-700">
+                        <svg class="h-6 w-6 text-gray-500"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                        </svg>
+                    </button>
+                    <div id="dropdownContent" class="px-2 text-sm hidden bg-white border border-gray-200 absolute top-8 right-0 z-10 py-2">
+                        <a href="{{ path('app_edit',{post:post.id}) }}" class="ml-2">
+                            Edit
+                        </a>
+                        
+                        <div class="border border-b-2 border-gray-300"></div>
+                        <a href="{{ path('app_post_delete', { 'post': post.id }) }}">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+           {% endif %}
+        </div>
+        <div class="text-xl m-2 mt-2">
+            {{ post.text }}
+        </div>
+        {% embed ('posts/_post_image.html.twig') with {style:'height:500px;'}%}
+        {% endembed %}
+        <div class="flex mt-2 ml-2">
+            {% if not post.likedby.contains(app.user) %}    
+                <a href="{{ path('app_like',{post:post.id}) }}" class="inline-flex items-center text-gray-500 hover:text-gray-700  dark:text-gray-400" >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 18l-1.45-1.32C3.4 12.1 0 9.05 0 5.5 0 2.42 2.42 0 5.5 0 7.07 0 8.61.82 10 2.27 11.39.82 12.93 0 14.5 0 17.58 0 20 2.42 20 5.5c0 3.55-3.4 6.6-8.55 11.18L10 18z"/>
+                    </svg>
+                    Like<span class="px-2 text-sm rounded-md bg-gray-200 text-gray-500  dark:bg-gray-500 dark:text-white">{{ post.likedby.count }}</span>
+                </a>
+            {% else %}
+                <a href="{{ path('app_unlike',{post:post.id}) }}" class="inline-flex items-center text-blue-500 hover:text-blue-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1 fill-current" viewBox="0 0 20 20">
+                        <path d="M10 18l-1.45-1.32C3.4 12.1 0 9.05 0 5.5 0 2.42 2.42 0 5.5 0 7.07 0 8.61.82 10 2.27 11.39.82 12.93 0 14.5 0 17.58 0 20 2.42 20 5.5c0 3.55-3.4 6.6-8.55 11.18L10 18z"/>
+                    </svg>
+                    Like<span class="px-2 text-sm rounded-md bg-gray-200 text-gray-500 dark:bg-gray-500 dark:text-white">{{ post.likedby.count }}</span>
+                </a>
+            {% endif %}  
+            <a href="{{path('app_post_show',{post:post.id})}}"class="ml-2 text-gray-600 hover:text-gray-700">
+               Comment<span class="px-2 text-sm rounded-md bg-gray-300 text-gray-500  dark:bg-gray-500 dark:text-white ">{{post.comments.count}}</span>
+            </a> 
+        </div>
+        <div class="ml-2 mt-1 font-light text-gray-500 dark:text-gray-400">
+          {{post.created| ago}}
+        </div>
+    </div>
+</div>      
+{% block javascripts %}
+    <script>
+        function toggleDropdown() {
+            var dropdown = document.getElementById('dropdownContent');
+            dropdown.classList.toggle('hidden');
+        }
+    </script>
+{% endblock %}

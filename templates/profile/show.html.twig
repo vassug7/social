@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block bread %}
+
+{% endblock %}
+{% block profileFeautures %}
+    <div class=" text-black">
+        <a href="{{path('app_profile_settings')}}"> Profile Settings</a>
+    </div>
+    <div class="ml-2 text-black">  
+        <a href="{{path('app_logout')}}">Logout </a>
+    </div>
+{% endblock %}
+{% block body %}
+    {{ include ('profile/_profile_header.html.twig'  ) }}
+    {{ include ('profile/_profile_tabs.html.twig' ) }}
+    {# {{ include ('posts/_post_list.html.twig', { posts: user.posts }) }} #}
+    {% embed 'posts/_post_list.html.twig'  with {posts:post,classes:'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2  ',style:'height:600px;'}%}
+        {% block postdata %}  
+            {% embed ('posts/_post_image.html.twig') with {style:' height:350px'}%}
+            {% endembed %}
+        {% endblock %} 
+    {% endembed %}
+{% endblock %}

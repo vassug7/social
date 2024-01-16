@@ -1,0 +1,10 @@
+{% extends 'base.html.twig'%} 
+
+{% block title %}All Posts{% endblock %}
+
+{% set headerClasses = 'lg:w-2/4' %}
+{% block body %}
+{% embed 'posts/_post_list.html.twig' with {classes:'2xl:mx-80 mx-auto ',style:'width:500px;'}%}
+   {% block postdata %}  {{include('posts/_post.html.twig')}} {% endblock %}
+{% endembed %}
+{% endblock %}

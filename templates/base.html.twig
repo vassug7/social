@@ -1,16 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html class="">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
-
-        {% block javascripts %}
-        {% endblock %}
+            {% block javascripts %}
+                {{ encore_entry_script_tags('app') }}
+            {% endblock %}
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                darkMode: 'class'
+            }
+        </script>
     </head>
-    <body>
-        {% block body %}{% endblock %}
+    <body class="bg-gray-100 dark:bg-gray-800 dark:text-white "> 
+        <header class=" mb-2 bg-white w-full  sticky top-0 border border-gray-300 border-b-4 drop-shadow-xl" style="z-index: 100; ">
+            <div class="w-full md:w-2/3 mx-auto mb-4 flex justify-between items-center {% if headerClasses is defined %}{{ headerClasses }} {% endif %}">
+                <div class="text-4xl ">
+                    <a href="{{ path('app_posts') }}">Home</a>
+                    {% block bread %}
+
+                    {% endblock %}
+                </div>
+
+                <div class="text-right">
+                    <div class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="mr-4">
+                                <a href="{{path('app_add')}}" class="text-black text-md"> 
+                                New
+                                <svg class="h-8 w-8 text-black inline"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  
+                                    stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <rect x="3" y="3" 
+                                    width="18" height="18" rx="2" ry="2" /> 
+                                    <line x1="12" y1="8" x2="12" y2="16" /> 
+                                    <line x1="8" y1="12" x2="16" y2="12" />
+                                </svg>
+                                </a>
+                            </div>
+                            {% block profileFeautures %}
+                        
+                            {% endblock %}
+                            <a class="" href="{{path('app_profile',{id:app.user.id})}}">{{include('shared/_avatar.html.twig',{'size': 12, profile: app.user.userProfile})}}</a>
+                        {% else %}
+                            <div>  
+                            <a href="{{path('app_login')}}">Login </a>
+                            </div>
+                            <div class="ml-2">
+                            <a href="{{path('app_register')}}">Register</a>
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="">
+            <div class="w-full md:w-2/3 mx-auto">
+            {% for message in app.flashes('success') %}
+                <div class="rounded-md p-2 border-green-300 bg-green-50 border dark:border-green-600 dark:bg-green-700 dark:text-white mb-4">{{ message }}</div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+                <div class="rounded-md p-2 border-red-300 bg-red-50 border dark:border-red-600 dark:bg-red-700 dark:text-white mb-4">{{ message }}</div>
+            {% endfor %}
+            {% block body %}{% endblock %}
+            </div>
+        </div>
+           
     </body>
-</html>
+    </html>

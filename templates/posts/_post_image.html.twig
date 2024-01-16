@@ -1,0 +1,8 @@
+{% if  post.postImage %}    
+          <a href='{{path('app_post_show',{post:post.id })}}'>
+            <div class="" id='thiss' style="{{style}}">
+                <img src="{{ postss ~ post.postImage }}"
+                    class="inline-block  2xl-w:auto w-full h-full  dark:ring-gray-600" />
+           </div>
+           </a>         
+       {% endif %}

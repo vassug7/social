@@ -1,0 +1,27 @@
+{% if posts|length > 0 %}
+  <div class="{% if classes is defined %}{{ classes }}{% else %} mx-auto{% endif %}" style="{% if style is defined %}{{ style }}{% endif %}">
+    {% for post in posts %} 
+      {% block postdata %} {% endblock %}
+    {% endfor %}
+  </div>  
+{% else %}
+  <div class="w-full text-center">    
+    <div class="font-bold text-gray-600 dark:text-gray-400">Nothing to show</div>
+    <div class="text-gray-400 dark:text-gray-500">The list is empty currently</div>
+  </div> 
+{% endif %}
+
+
+{# <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+  {% if posts|length > 0 %}
+    {% for post in posts %}
+     {{include('posts/_post.html.twig')}}
+    {% endfor %}
+  {% else %}
+     <div>
+       <div class="font-bold text-gray-600 dark:text-gray-400">Nothing to show</div>
+       <div class="text-gray-400 dark:text-gray-500">The list is empty currently</div>
+     </div> 
+  {% endif %}
+</div>
+</div> #}

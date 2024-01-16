@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Post - {% endblock %}
+
+{% block bread %}
+    
+{% endblock %}
+{% set headerClasses = 'lg:w-2/4' %}
+{% block body %}
+    {% embed 'posts/_post_list.html.twig' with {classes:'2xl:mx-80 mx-auto ',style:'width:500px;'}%}
+        {% block postdata %}
+            {% include 'posts/_post.html.twig' with {'SinglePost': true} %}
+            <div class="my-4">
+                {{ form_start(form,{'attr':{'novalidate':'novalidate'}}) }}
+                    <div>{{form_errors(form)}}</div>
+                    <div>
+                        {{form_label(form.text,'Enter Comment',{'label_attr':{'class':'block text-sm text-gray-700  dark:text-gray-300 font-medium'}})}}
+                        {{ form_widget(form.text,{'attr':{'class':'block w-full shadow-sm  border-gray-300 dark:border-transparent dark:text-gray-800 rounded-md border p-2 mt-1 mb-2'}})}}
+                        {{ form_errors(form.text)}}
+                    </div>
+                    <button  type="submit" class="block w-full  shadow-sm border-transparent bg-indigo-600 hover:bg-indigo-700 dark:hover:bg-indigo-400 text-white rounded-md border p-2 mt-1 mb-2">Save! </button>
+                {{ form_end(form) }}
+            {% for comment in post.comments %}
+                {{include('posts/_comment.html.twig')}}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+    {# {% for post in posts %}
+        {{include('posts/_post.html.twig')}} 
+        <div class="mt-9">
+           {% for comment in post.comments %}
+             <div>
+                <div class="flex items-center">
+                    <div class="mr-2">
+                       {{ include('shared/_avatar.html.twig', { profile: comment.author.userProfile, size: 8 }) }}
+                    </div>
+                    <div>
+                    <a href="{{path('app_profile',{id:comment.author.id})}}">
+                        <div class="font-medium text-gray-800 dark:text-gray-300">{{comment.author.email}}</div>
+                    </a>
+                    <div class="font-light text-gray-500 dark:text-gray-400">{{comment.created| date("M d, Y")}}</div>
+                    </div>
+                </div>
+        
+                <div class="flex">
+                <div class="border border-gray-300 dark:broder-gray-600 mr-6 ml-4 pb-12 {% if not loop.last %} border-gray-300 dark:broder-gray-600 {% else %} border-transparent {% endif %}"></div>
+                <div class="mt-2 ">{{comment.text}}</div>
+                </div>
+             </div>
+            {% endfor %}
+        </div>   
+    {% endfor %}     
+{% endblock %} #}
